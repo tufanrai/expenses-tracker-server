@@ -1,0 +1,7 @@
+npm i -D ts-node-dev --> expention package that works similar to nodemon for tsc
+
+        .env must always be in the root directory together withe the package.json files
+
+Task 
+    make use model -- name, email, password, pp(optional)
+    if possible do CRUD operation
