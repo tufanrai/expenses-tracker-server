@@ -1,26 +1,30 @@
-import {Model, Schema, model} from 'mongoose'
-
+import {Model, Schema} from 'mongoose'
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ ;
 const UserSchema = new Schema({
-    name: {
+    full_name: {
         type: String,
-        require: true
+        require: [true, 'full name required']
+    },
+    user_name: {
+        type: String,
+        require: true,
     },
     Contact: {
-        type: Number,
-        require: true,
-        unique: true
+        type: String,
     },
     email: {
         type: String,
         require: true,
-        unique: true
+        unique: [true, 'user already exist with this email'],
+        match: [emailRegex, 'please check the email format']
     },
     password: {
         type: String,
         require: true,
-        Min: 6
+        min: 6,
+        max: 15
     }
-})
+},{timestamps:true})
 
 const Client = new Model('User', UserSchema)
 export default Client
