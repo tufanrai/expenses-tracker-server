@@ -18,3 +18,4 @@ export const userId = asyncHandler(async (req: Request, res: Response) => {
     console.log(user)
     res.status(404).json(user)
 })
+

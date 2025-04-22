@@ -1,5 +1,7 @@
-import {Model, Schema} from 'mongoose'
+import {model, Schema} from 'mongoose'
+
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ ;
+
 const UserSchema = new Schema({
     full_name: {
         type: String,
@@ -26,5 +28,5 @@ const UserSchema = new Schema({
     }
 },{timestamps:true})
 
-const Client = new Model('User', UserSchema)
+const Client = model('User', UserSchema)
 export default Client
