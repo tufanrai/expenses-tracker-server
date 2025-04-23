@@ -12,4 +12,5 @@ const JWT_EXPIRE_DATE = process.env.JWT_EXPIRE ?? 'shhhh'
 
 export const generateJwtToken = async (payload: IPayload) => {
     const token = jwt.sign(payload, JWT_SECRET, {expiresIn: JWT_EXPIRE_DATE})
+    return token
 }
