@@ -7,3 +7,6 @@ Task
     if possible do CRUD operation
 
     helmet
+    bcrypt.js -- package that helps to has the the password for the users privacy
+    jsonwebtoken -- generats web tokan for later direct login to account with just a token stored in the device
+    

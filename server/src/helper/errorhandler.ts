@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
     
 
+// Gets all the error form the middlewares and sends them to the errorhandler middleware after processing
 class errorHelper extends Error{
     status: 'success' | 'error' | 'fail'
     statusCode:number
@@ -16,6 +17,7 @@ class errorHelper extends Error{
 }
 
 
+// Displays the error occured in the program
 export const errorHandler = (err: any, req:Request, res:Response, next:NextFunction) => {
     const message = err.message || 'Server site error'
     const statusCode = err.statusCode || 500

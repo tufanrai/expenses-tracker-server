@@ -10,8 +10,9 @@ const UserSchema = new Schema({
     user_name: {
         type: String,
         require: true,
+        unique: [true, 'user with same username exists']
     },
-    Contact: {
+    contact: {
         type: String,
     },
     email: {
