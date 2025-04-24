@@ -5,6 +5,7 @@ import router from './routers/router'
 import category from './routers/categroyRout'
 import errorHelper, { errorHandler } from './helper/errorhandler'
 
+// importing the prot and db_url form .env file =
 const PORT = process.env.PORT
 const DB_URL = process.env.DB_URL ?? ""
 

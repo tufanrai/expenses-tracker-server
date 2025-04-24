@@ -14,7 +14,6 @@ export const create = async(req: Request, res: Response) => {
         throw new errorHelper('user not found', 404)
     }
     const category = await Category.create({name,user: user._id})
-
     res.send(201).json({
         message: 'Cerated successfuly',
         data: category,
@@ -27,26 +26,21 @@ export const create = async(req: Request, res: Response) => {
 export const update = async(req: Request, res: Response) => {
     const {name, userId} = req.body
     const {id} = req.params
-
     if(!id) {
         throw new errorHelper('category id is required', 400)
     }
     if(!userId) {
         throw new errorHelper('user is required', 400)
     }
-
     const user = await Client.findById(userId)
 
     if(!user) {
         throw new errorHelper('user not found', 404)
     }
-
     const category = await Category.findOneAndUpdate({_id: id, user: userId},{name}, {new: true})
-
     if(!category) {
         throw new errorHelper('category not found', 404)
     }
-
     res.send(201).json({
         message: 'Cerated successfuly',
         data: category,
@@ -55,7 +49,7 @@ export const update = async(req: Request, res: Response) => {
     })
 }
 
-// Get by id
+// Gets the category by id
 export const getById = async(req: Request, res: Response) => {
     const {id} = req.params
     if(!id) {
