@@ -5,6 +5,7 @@ import asyncHandler from "../helper/asyncHanlder";
 import { hash } from '../helper/bcryptHandler'
 import errorHelper, { errorHandler } from "../helper/errorhandler";
 import { generateJwtToken } from "../helper/hwt.helper";
+import { Role } from "../types/enum.types";
 
 // Sign-in new accounts 
 export const register = asyncHandler(async (req: Request, res: Response) => {
@@ -23,8 +24,16 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
 // check authenticity and login
 export const log_in = asyncHandler(async (req: Request, res: Response, next:NextFunction) => {
-    const User = await Client.findOne({email : `${req.body.email}`, password: `${req.body.password}`})
-    const token = generateJwtToken({_id: Client._id, email: Client.email, full_name: Client.full_name})
+    const User = await Client.findOne({email : req.body.email})
+    if(!User) {
+        throw new errorHelper('user not found', 404)
+    }
+    const token = generateJwtToken({_id: User._id,
+                                     user_name:User.user_name,
+                                     email: User.email,
+                                     full_name: User.full_name,
+                                     role: User.role
+                                    })
     console.log(User)
     res.status(200).json({
         User,

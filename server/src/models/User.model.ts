@@ -1,15 +1,16 @@
 import {model, Schema} from 'mongoose'
+import { Role } from '../types/enum.types';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ ;
 
 const UserSchema = new Schema({
     full_name: {
         type: String,
-        require: [true, 'full name required']
+        required: [true, 'full name required']
     },
     user_name: {
         type: String,
-        require: true,
+        required: true,
         unique: [true, 'user with same username exists']
     },
     contact: {
@@ -17,15 +18,20 @@ const UserSchema = new Schema({
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         unique: [true, 'user already exist with this email'],
         match: [emailRegex, 'please check the email format']
     },
     password: {
         type: String,
-        require: true,
+        required: true,
         min: 6,
         max: 15
+    },
+    role: {
+        type: String,
+        enum: Object.values(Role),
+        default: Role.USER
     }
 },{timestamps:true})
 

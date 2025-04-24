@@ -2,11 +2,25 @@ npm i -D ts-node-dev --> expention package that works similar to nodemon for tsc
 
         .env must always be in the root directory together withe the package.json files
 
-Task 
-    make use model -- name, email, password, pp(optional)
-    if possible do CRUD operation
+Task
+make use model -- name, email, password, pp(optional)
+if possible do CRUD operation
 
     helmet
     bcrypt.js -- package that helps to has the the password for the users privacy
     jsonwebtoken -- generats web tokan for later direct login to account with just a token stored in the device
-    
+
+
+    api algorithm :
+        - find the request inside the database
+        - if no return error
+        - if yes write the code for true condition
+        - send response
+
+WHAT THIS WE DID?
+In the very beginning we first initialized all the required packages like nodemon, typescript, helmet, mongoose. in our root directory which in our case in server. Then we created our root folder with name src where all out codes will be written. We also created one .env folder where we strore all our essentials and sensetive datas, ports or link.
+
+Then inside our src folder we created our main file 'server.js' and started our server we linked mongodb and other essential files. Then we created one router folder where we creatd main controlling pannels 'router.ts'
+from where we handled all the CRUD operation for a user page. We created another folder with named'controller' and created 'user.controller.ts' file to define all the operations. We creatend another folder 'model' where we defined the users' schema and exported it to use in CRUD operation.
+
+Another thing we did was created a folder config where we defined a database connection function tat connects the server with the db

@@ -1,16 +1,11 @@
 import jwt from 'jsonwebtoken'
-
-interface IPayload {
-    _id:mongoose.type._id,
-    full_name:string,
-    email:string,
-    user_name:string
-}
+import mongoose from 'mongoose'
+import { IPayload } from '../types/global.types'
 
 const JWT_SECRET = process.env.JWT_SECRET?? 'shhhh'
 const JWT_EXPIRE_DATE = process.env.JWT_EXPIRE 
 
 export const generateJwtToken = async (payload: IPayload) => {
-    const token = jwt.sign(payload, JWT_SECRET, {expiresIn: JWT_EXPIRE_DATE})
+    const token = jwt.sign(payload, JWT_SECRET, {expiresIn: JWT_EXPIRE_DATE as any})
     return token
 }

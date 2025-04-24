@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express, { NextFunction, Request, Response } from 'express'
 import { dbconnection } from './config/dbConnect'
 import router from './routers/router'
+import category from './routers/categroyRout'
 import errorHelper, { errorHandler } from './helper/errorhandler'
 
 const PORT = process.env.PORT
@@ -18,6 +19,7 @@ app.use(express.json())
 
 //routing
 app.use('/api/auth', router)
+app.use('/api/category', category)
 app.all('/*s', (req:Request,res:Response,next:NextFunction)=>{
     const message = `Cannot ${req.method} on ${req.url}`
     const error = new errorHelper(message, 404)
