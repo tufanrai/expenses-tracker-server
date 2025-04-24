@@ -7,8 +7,8 @@ interface IPayload {
     user_name:string
 }
 
-const JWT_SECRET = process.env.JWT_SECRET
-const JWT_EXPIRE_DATE = process.env.JWT_EXPIRE ?? 'shhhh'
+const JWT_SECRET = process.env.JWT_SECRET?? 'shhhh'
+const JWT_EXPIRE_DATE = process.env.JWT_EXPIRE 
 
 export const generateJwtToken = async (payload: IPayload) => {
     const token = jwt.sign(payload, JWT_SECRET, {expiresIn: JWT_EXPIRE_DATE})
