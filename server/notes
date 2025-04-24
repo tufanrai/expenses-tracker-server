@@ -20,7 +20,11 @@ if possible do CRUD operation
 WHAT THIS WE DID?
 In the very beginning we first initialized all the required packages like nodemon, typescript, helmet, mongoose. in our root directory which in our case in server. Then we created our root folder with name src where all out codes will be written. We also created one .env folder where we strore all our essentials and sensetive datas, ports or link.
 
-Then inside our src folder we created our main file 'server.js' and started our server we linked mongodb and other essential files. Then we created one router folder where we creatd main controlling pannels 'router.ts'
-from where we handled all the CRUD operation for a user page. We created another folder with named'controller' and created 'user.controller.ts' file to define all the operations. We creatend another folder 'model' where we defined the users' schema and exported it to use in CRUD operation.
+Then inside our src folder we created our main file 'server.js' and started our server we linked mongodb and other essential files. Then we created one router folder where we created main controlling pannels 'router.ts'
+from where we handled all the CRUD operation for a user page. We created another folder with named'controller' and created 'user.controller.ts' file to define all the CRUD operations related to user. We creatend another folder 'model' where we defined the users' schema and exported it to use in CRUD operation.
 
-Another thing we did was created a folder config where we defined a database connection function tat connects the server with the db
+Another thing we did was created a folder config where we defined a database connection function that connects the server with the db. Then we created a helper folder where we defined various helping files like error handler helper and async helper. These files helps coders to write less code and keep the code clean.
+
+Then again we imported a jwt (Json-Web-Token) package to make keep the password entered by the user in a hash format such that the password entered by the users remain unknown and safe in the database. Hashing works in a way where the user while trying to login they type their password server receives the password then converts it into a hash which letter is compared to the hash value stored in the users' database. If the hashed value matches then the login gets verified and the user can login else sever returns an error.
+
+Then we worked on the category file. we created a separate router file for the category and also a separeate controller file as well as a schema.
