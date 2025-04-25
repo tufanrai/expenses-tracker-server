@@ -30,3 +30,26 @@ Another thing we did was created a folder config where we defined a database con
 Then again we imported a jwt (Json-Web-Token) package to make keep the password entered by the user in a hash format such that the password entered by the users remain unknown and safe in the database. Hashing works in a way where the user while trying to login they type their password server receives the password then converts it into a hash which letter is compared to the hash value stored in the users' database. If the hashed value matches then the login gets verified and the user can login else sever returns an error.
 
 Then we worked on the category file. we created a separate router file for the category and also a separeate controller file as well as a schema.
+
+What are we making?
+
+- we are making an expenses tracker that tracks your expenses and helps you regulate and identify where you are spending more of your money on.
+
+What did you use to make it?
+
+- currently we are still on the backend and till now we have used nodejs, expressjs for the backend handling we used typescript for the better coding and mongodb for the database.
+
+What were the steps on making this project?
+
+Back-end: {
+
+- npm and tsc initialize
+- connect database
+- error handler and helper
+- async function helper
+- user schema - hashing
+- JSON Web Token generation and verifying
+- category
+- authentication or valid user
+- allow permission to make changes in category to loged in users
+  }

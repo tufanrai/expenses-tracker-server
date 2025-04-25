@@ -11,7 +11,7 @@ export const generateJwtToken = async (payload: IPayload) => {
     return token
 }
 
-
+// verifies the entered toke with the existing db token
 export const verifyJWT = (token: string):JwtPayload => {
     return jwt.verify(token, JWT_SECRET) as JwtPayload
 }
