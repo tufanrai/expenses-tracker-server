@@ -17,6 +17,8 @@ if possible do CRUD operation
         - if yes write the code for true condition
         - send response
 
+d.ts file is created usualy to extend the erquest
+
 WHAT THIS WE DID?
 In the very beginning we first initialized all the required packages like nodemon, typescript, helmet, mongoose. in our root directory which in our case in server. Then we created our root folder with name src where all out codes will be written. We also created one .env folder where we strore all our essentials and sensetive datas, ports or link.
 

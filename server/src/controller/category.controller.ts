@@ -67,3 +67,15 @@ export const getById = async(req: Request, res: Response) => {
         staus: 'success'
     })
 }
+
+// delets the category 
+export const deleteCategory = async (req: Request, res: Response) => {
+    const {id} = req.params 
+    if(!id) {
+        throw new errorHelper('category not found', 404)
+    }
+    res.status(200).json({
+        status: 200,
+        message: 'category deleted',
+    })
+}

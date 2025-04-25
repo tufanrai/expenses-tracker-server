@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import { IPayload } from '../types/global.types'
 
@@ -9,4 +9,9 @@ const JWT_EXPIRE_DATE = process.env.JWT_EXPIRE
 export const generateJwtToken = async (payload: IPayload) => {
     const token = jwt.sign(payload, JWT_SECRET, {expiresIn: JWT_EXPIRE_DATE as any})
     return token
+}
+
+
+export const verifyJWT = (token: string):JwtPayload => {
+    return jwt.verify(token, JWT_SECRET) as JwtPayload
 }

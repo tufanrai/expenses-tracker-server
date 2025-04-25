@@ -4,7 +4,7 @@ import { NestedPaths } from "mongoose";
 import asyncHandler from "../helper/asyncHanlder";
 import { hash } from '../helper/bcryptHandler'
 import errorHelper, { errorHandler } from "../helper/errorhandler";
-import { generateJwtToken } from "../helper/hwt.helper";
+import { generateJwtToken } from "../helper/jwt.helper";
 import { Role } from "../types/enum.types";
 
 // Sign-in new accounts 
