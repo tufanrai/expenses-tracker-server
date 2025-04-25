@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Client from "../models/User.model"
 import { NestedPaths } from "mongoose";
-import asyncHandler from "../helper/asyncHanlder";
+import asyncHandler from "../helper/asyncHandler";
 import { hash } from '../helper/bcryptHandler'
 import errorHelper, { errorHandler } from "../helper/errorhandler";
 import { generateJwtToken } from "../helper/jwt.helper";

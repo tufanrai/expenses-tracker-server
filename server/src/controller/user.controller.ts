@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Client from "../models/User.model"
 import { NestedPaths } from "mongoose";
-import asyncHandler from "../helper/asyncHanlder";
+import asyncHandler from "../helper/asyncHandler";
 import errorHelper from "../helper/errorhandler";
 
 // Sends all the files from the collection "Clients"

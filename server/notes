@@ -1,10 +1,7 @@
+<-- packages -->
+
 npm i -D ts-node-dev --> expention package that works similar to nodemon for tsc
-
-        .env must always be in the root directory together withe the package.json files
-
-Task
-make use model -- name, email, password, pp(optional)
-if possible do CRUD operation
+.env must always be in the root directory together withe the package.json files
 
     helmet
     bcrypt.js -- package that helps to has the the password for the users privacy
@@ -19,17 +16,7 @@ if possible do CRUD operation
 
 d.ts file is created usualy to extend the erquest
 
-WHAT THIS WE DID?
-In the very beginning we first initialized all the required packages like nodemon, typescript, helmet, mongoose. in our root directory which in our case in server. Then we created our root folder with name src where all out codes will be written. We also created one .env folder where we strore all our essentials and sensetive datas, ports or link.
-
-Then inside our src folder we created our main file 'server.js' and started our server we linked mongodb and other essential files. Then we created one router folder where we created main controlling pannels 'router.ts'
-from where we handled all the CRUD operation for a user page. We created another folder with named'controller' and created 'user.controller.ts' file to define all the CRUD operations related to user. We creatend another folder 'model' where we defined the users' schema and exported it to use in CRUD operation.
-
-Another thing we did was created a folder config where we defined a database connection function that connects the server with the db. Then we created a helper folder where we defined various helping files like error handler helper and async helper. These files helps coders to write less code and keep the code clean.
-
-Then again we imported a jwt (Json-Web-Token) package to make keep the password entered by the user in a hash format such that the password entered by the users remain unknown and safe in the database. Hashing works in a way where the user while trying to login they type their password server receives the password then converts it into a hash which letter is compared to the hash value stored in the users' database. If the hashed value matches then the login gets verified and the user can login else sever returns an error.
-
-Then we worked on the category file. we created a separate router file for the category and also a separeate controller file as well as a schema.
+<-- Proper Note -->
 
 What are we making?
 
@@ -53,3 +40,38 @@ Back-end: {
 - authentication or valid user
 - allow permission to make changes in category to loged in users
   }
+
+front-end: {
+
+}
+
+<-- Discription -->
+
+This is our actual submitting project of our MERN stack development course. Here we are building an expenses tracker. this helps you in keeping the track of what are you using you money for and help you analyse you expenses tracker for better financial plannings.
+
+Here, for the backend we are using node.js and express.js for handling the request and response cycle. we are using typescript for the better coding and mongodb for the database. Here talking about the packages we have used third party packages like bcrypt and jwt for hashing and generating the JSON web token for the authenticity of the user.
+
+Process: For the process we first started by seperating the frontend and backend by creating two folder (client: Frontend and server: Backend). Inside SERVER folder we initilized our npm and tsc config we also installed the mongoose for connecting the server with the databse and also installed the third party packages like bcryptjs and jwt for hashing and generating JSON_Web_Tokens. we also created .env file which is used for storing the sensative port links like server port and db_urls'
+
+Then, we created a folder SRC where we write all the codes using typescript and outside the SRC folder and inside the SERVER folder we also create a folder build where all the backend codes written in the typescript gets converted into the ts format and gets' stored.
+
+Inside the SRC folder we create a main file with the name 'server.ts' which is the main file of the entire backend. where all the other files that we create gets linked. we created a folder ROUTERS where we wrote the codes related to CRUD methods. Than, we created another folder CONTROLLER where we defined all the request response handling codes.
+
+we also created another folder MODELS where we defined the user schema for the data storing in the database. we exported the schema as a default export to use it while performing the CRUD operations.
+we than created config folder where we defined a function that connects the server to the database.
+we also created a helper folder where we defined some other helper functions and like async helper, auth middleware, bcrypt handler and jwt helper.
+
+Talking about the files inside the HELPER folder:
+
+– asyncHandler.ts : {
+This file basicly helps the coders to not to write try{}catch{} in every async function as this file accepts the async functions and operats the function. if it finds any error than it directly calls the error handler middleware else returns the a promise inside a function.
+it returns as a function because the functions sent to this files are those files or functions that manages the request and response cycle.
+}
+
+– erorhandler.ts : {
+Inside this file two types of error handler are defined (custon & middleware). Custom middleware error handler is defined with a class and receives message and status code as a params than it identifies whether the error is a fail or the error type than identifies the success or false then after identifying them all it sends them to the error handler middleware and the error handler middleware returns an error as a result.
+}
+
+– bcryptHandler.ts : {
+This file turns the user entered password into a hash value which later gets stored into the database as a password.
+}
