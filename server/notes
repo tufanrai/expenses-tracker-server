@@ -75,3 +75,11 @@ Inside this file two types of error handler are defined (custon & middleware). C
 – bcryptHandler.ts : {
 This file turns the user entered password into a hash value which later gets stored into the database as a password.
 }
+
+– jwt.helper.ts : {
+This file helps you generate a json web token that can be usesd for auto login in the site after once logedin. It basicaly takes some parameters and generats a web token using those parameters.
+}
+
+– auth.middleware.ts : {
+This file helps to authinticate the loged in user than grants the access to perform CRUD operation in the category field.
+}
