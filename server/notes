@@ -22,7 +22,7 @@ What are we making?
 
 - we are making an expenses tracker that tracks your expenses and helps you regulate and identify where you are spending more of your money on.
 
-What did you use to make it?
+What did we use to make it?
 
 - currently we are still on the backend and till now we have used nodejs, expressjs for the backend handling we used typescript for the better coding and mongodb for the database.
 
