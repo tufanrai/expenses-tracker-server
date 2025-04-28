@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import errorHelper from "../helper/errorhandler";
 import Client from "../models/User.model";
 import Category from "../models/category.model";
+import asyncHandler from "../helper/asyncHandler";
 
 // Create new category
 export const create = async(req: Request, res: Response) => {
@@ -68,14 +69,25 @@ export const getById = async(req: Request, res: Response) => {
     })
 }
 
+// get all user category
+export const getAll = asyncHandler(async(req: Request, res: Response) => {
+    const userId = req.user._id
+    const category = await Category.find({user: userId})
+    res.send(201).json({
+        message: 'Cerated successfuly',
+        data: category,
+        success: true,
+        staus: 'success'
+    })
+})
+
 // delets the category 
-export const deleteCategory = async (req: Request, res: Response) => {
-    const {id} = req.params 
-    if(!id) {
-        throw new errorHelper('category not found', 404)
-    }
+export const remove = asyncHandler(async (req: Request, res: Response) => {
+    const {id} = req.params
+    const userId = req.user._id
+    await Category.deleteOne({user: userId, _id: id})
     res.status(200).json({
         status: 200,
         message: 'category deleted',
     })
-}
+})

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "run": "node src/server.js",
-    "dev": "ts-node-dev --respawn ./src/server.ts",
+    "start": "node src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc"
   },
   "keywords": [],
@@ -15,12 +15,15 @@
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
+    "multer": "^1.4.5-lts.2",
     "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
     "nodemon": "^3.1.9"
   }
 }
