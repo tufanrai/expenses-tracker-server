@@ -4,6 +4,8 @@ import { asyncHandler } from '../utils/async-handler'
 import CustomError from '../middlewares/error-handler.middleware'
 import Category from '../models/category.model'
 import {deleteImages} from '../config/cloudinary.config'
+import { sendMail } from '../utils/send-mail.util'
+import User from '../models/user.model'
 
 export const create = asyncHandler(async(req:Request,res:Response) =>{
 
@@ -43,7 +45,27 @@ export const create = asyncHandler(async(req:Request,res:Response) =>{
 
     await expense.save()
 
+    const html = `
+    <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <h1 style="color: #333; font-size: 24px; margin-bottom: 20px;">New Expense Added by ${req.user.full_name}</h1>
+      <h2 style="color: #555; font-size: 20px; margin-bottom: 15px;">Expense Detail</h2>
+      <div style="background-color: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+        <p style="font-size: 16px; color: #555; margin: 10px 0;"><strong>Title:</strong> <span style="color: #000;">${expense.title}</span></p>
+        <p style="font-size: 16px; color: #555; margin: 10px 0;"><strong>Amount:</strong> <span style="color: #2d87f0;">Rs.${expense.amount}</span></p>
+        <p style="font-size: 16px; color: #555; margin: 10px 0;"><strong>Expense Date:</strong> <span style="color: #000;">${expense.date}</span></p>
+        <h3 style="font-weight: 900; color: #007BFF; font-size: 20px; margin-top: 20px;">Description:</h3>
+        <p style="font-size: 16px; color: #555; margin-top: 5px;">${expense.description ?? 'No Description Found'}</p>
+      </div>
+    </div>
+  `;
+  
 
+
+    await sendMail({
+        to:'rsaagar7200@gmail.com',
+        subject:'Expense Created',
+        html
+    })
 
     res.status(201).json({
         status:'success',
@@ -61,11 +83,9 @@ export const update = asyncHandler(async(req:Request,res:Response) =>{
     const {id} = req.params
     const files = req.files as Express.Multer.File[]
 
-  
-
-    console.log("👊 ~ expense.controller.ts:44 ~ create ~ files:", files)
-
     const expense = await Expense.findOne({_id:id,user:userId})
+
+
 
 
     if(!expense){
@@ -163,4 +183,36 @@ export const getAllUserExpByCategory = asyncHandler(async(req:Request,res:Respon
         success:true
     })
     
+})
+
+
+export const remove = asyncHandler(async(req:Request,res:Response)=>{
+    const {id} = req.params
+    const userId = req.user._id
+
+    const expense = await Expense.findById(id)
+    if(!expense){
+        throw new CustomError('Expense not found',404)
+    }
+
+    if(expense.user !== userId){
+        throw new CustomError('You can not perform this operation',400)
+    }
+
+
+    await expense.deleteOne()
+
+    if(expense.receipts && expense.receipts.length > 0){
+        const public_ids = expense.receipts.map(receipt => receipt.public_id) as string[]
+       await  deleteImages(public_ids)
+    }
+
+
+    res.status(200).json({
+        status:'success',
+        success:true,
+        message:'Expense deleted.',
+        data:null
+    })
+
 })
