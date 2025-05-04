@@ -13,7 +13,6 @@ export const Authenticate = (roles?:Role[]) =>{
     try {
         const auth_header = req.headers['authorization']
 
-console.log(auth_header)
 
     if(!auth_header){
         throw new CustomError('Unauthorized, access denied',401)   
@@ -49,7 +48,6 @@ console.log(auth_header)
         throw new CustomError('Forbidden, access denied',403)   
 
     }
-    console.log(req.user)
 
     req.user = {
         _id:decoded._id,

@@ -20,7 +20,6 @@ const Authenticate = (roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const auth_header = req.headers['authorization'];
-            console.log(auth_header);
             if (!auth_header) {
                 throw new error_handler_middleware_1.default('Unauthorized, access denied', 401);
             }
@@ -42,7 +41,6 @@ const Authenticate = (roles) => {
             if (roles && !roles.includes(user.role)) {
                 throw new error_handler_middleware_1.default('Forbidden, access denied', 403);
             }
-            console.log(req.user);
             req.user = {
                 _id: decoded._id,
                 email: decoded.email,

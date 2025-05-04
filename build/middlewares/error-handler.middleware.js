@@ -11,7 +11,6 @@ class CustomError extends Error {
     }
 }
 const errorHandler = (err, req, res, next) => {
-    console.log(err);
     const message = err.message || 'Something went wrong';
     const statusCode = err.statusCode || 500;
     const status = err.status || 'error';
