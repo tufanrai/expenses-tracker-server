@@ -8,7 +8,7 @@ import { generateJwTToken } from "../utils/jwt.utils";
 
 export const register  = asyncHandler(async(req:Request,res:Response)=>{
 
-    const {password,...data} = req.body;
+    const {password,role,...data} = req.body;
 
     if(!password){
         throw new CustomError('Password is required',400)

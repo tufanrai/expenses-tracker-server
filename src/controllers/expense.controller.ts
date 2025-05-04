@@ -6,6 +6,7 @@ import Category from '../models/category.model'
 import {deleteImages} from '../config/cloudinary.config'
 import { sendMail } from '../utils/send-mail.util'
 import User from '../models/user.model'
+import { getPagination } from '../utils/pagination.util'
 
 export const create = asyncHandler(async(req:Request,res:Response) =>{
 
@@ -169,17 +170,45 @@ export const getAllUserExpByCategory = asyncHandler(async(req:Request,res:Respon
 
     const userId = req.user._id
     const {categoryId} = req.params
+    const {per_page="10",page="1",title} = req.query
+
+    const limit = parseInt(per_page as string)
+    const current_page = parseInt(page as string)
+    const skip =  (current_page -1) * limit
+
+    let filter:any = {}
+
+    if(title){
+        filter.title = {$regex:title,$options:'i'}
+        filter.description = {$regex:title,$options:'i'}
+    }
+    // if(A){
+    //     filter.amount = 
+    // }
+
+
+
+
+
     
     if(!categoryId){
         
         throw new CustomError('categoryId is required',400)
     }
-   const expenses =  await Expense.find({user:userId,category:categoryId})
+
+   const expenses =  await Expense.find({user:userId,category:categoryId,...filter}).limit(limit).skip(skip).sort({createdAt:-1})
+
+   const total = await Expense.countDocuments({user:userId,category:categoryId})
+   const pagination = getPagination(total,limit,current_page)
+
 
     res.status(201).json({
         status:'success',
         message:"Expense fetched",
-        data:expenses,
+        data:{
+            data:expenses,
+            pagination
+        },
         success:true
     })
     
