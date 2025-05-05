@@ -5,7 +5,6 @@ import CustomError from '../middlewares/error-handler.middleware'
 import Category from '../models/category.model'
 import {deleteImages} from '../config/cloudinary.config'
 import { sendMail } from '../utils/send-mail.util'
-import User from '../models/user.model'
 import { getPagination } from '../utils/pagination.util'
 
 export const create = asyncHandler(async(req:Request,res:Response) =>{
@@ -14,10 +13,6 @@ export const create = asyncHandler(async(req:Request,res:Response) =>{
     const userId = req.user._id
 
     const files = req.files as Express.Multer.File[]
-
-  
-
-    console.log("👊 ~ expense.controller.ts:44 ~ create ~ files:", files)
 
 
     if(!categoryId){
@@ -86,9 +81,6 @@ export const update = asyncHandler(async(req:Request,res:Response) =>{
 
     const expense = await Expense.findOne({_id:id,user:userId})
 
-
-
-
     if(!expense){
         throw new CustomError('expense not found',404)
     }
@@ -153,13 +145,26 @@ export const update = asyncHandler(async(req:Request,res:Response) =>{
 export const getAllByUser = asyncHandler(async(req:Request,res:Response) =>{
 
     const userId = req.user._id
+    const {per_page="10",page="1",title} = req.query
 
-   const expenses =  await Expense.find({user:userId})
+    const limit = parseInt(per_page as string)
+    const current_page = parseInt(page as string)
+    const skip =  (current_page -1) * limit
+
+    let filter:any = {}
+
+    if(title){
+        filter.title = {$regex:title,$options:'i'}
+        filter.description = {$regex:title,$options:'i'}
+    }
+   const expenses =  await Expense.find({user:userId,...filter}).limit(limit).skip(skip).sort({createdAt:-1})
+   const total = await Expense.countDocuments({user:userId})
+   const pagination = getPagination(total,limit,current_page)
 
     res.status(201).json({
         status:'success',
         message:"Expense fetched",
-        data:expenses,
+        data:{data:expenses,pagination},
         success:true
     })
     
@@ -181,13 +186,7 @@ export const getAllUserExpByCategory = asyncHandler(async(req:Request,res:Respon
         filter.title = {$regex:title,$options:'i'}
         filter.description = {$regex:title,$options:'i'}
     }
-    // if(A){
-    //     filter.amount = 
-    // }
-
-
-
-
+ 
 
     
     if(!categoryId){
