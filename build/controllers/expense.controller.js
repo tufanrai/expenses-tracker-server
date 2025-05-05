@@ -113,12 +113,10 @@ exports.update = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
             });
         });
     }
-    if (removedImages) {
+    if (removedImages && expense.receipts.length > 0) {
         const deletedImages = JSON.parse(removedImages);
         yield (0, cloudinary_config_1.deleteImages)(deletedImages);
-        deletedImages.forEach(public_id => {
-            expense.receipts.pull({ public_id });
-        });
+        expense.receipts = expense.receipts.filter(receipt => { var _a; return !deletedImages.includes((_a = receipt === null || receipt === void 0 ? void 0 : receipt.public_id) === null || _a === void 0 ? void 0 : _a.toString()); });
     }
     const updatedExpense = yield expense.save();
     res.status(200).json({

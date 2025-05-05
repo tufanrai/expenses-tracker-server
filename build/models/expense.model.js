@@ -23,10 +23,12 @@ const expenseSchema = new mongoose_1.Schema({
     },
     receipts: [{
             path: {
-                type: String
+                type: String,
+                required: true
             },
             public_id: {
-                type: String
+                type: String,
+                required: true
             }
         }],
     category: {

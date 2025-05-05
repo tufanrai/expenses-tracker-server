@@ -121,14 +121,13 @@ export const update = asyncHandler(async(req:Request,res:Response) =>{
 
     }
 
-    if(removedImages){
+    if(removedImages && expense.receipts.length > 0){
         const deletedImages:string[] = JSON.parse(removedImages)
 
         await deleteImages(deletedImages)
 
-        deletedImages.forEach(public_id =>{
-                expense.receipts.pull({public_id})
-        })
+
+        expense.receipts = expense.receipts.filter(receipt =>  !deletedImages.includes(receipt?.public_id?.toString()) ) as any
     }
 
    const updatedExpense = await expense.save()
