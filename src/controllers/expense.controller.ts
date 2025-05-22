@@ -145,7 +145,7 @@ export const update = asyncHandler(async(req:Request,res:Response) =>{
 export const getAllByUser = asyncHandler(async(req:Request,res:Response) =>{
 
     const userId = req.user._id
-    const {per_page="10",page="1",title} = req.query
+    const {per_page="10",page="1",title,max_amount , min_amount} = req.query
 
     const limit = parseInt(per_page as string)
     const current_page = parseInt(page as string)
@@ -154,11 +154,22 @@ export const getAllByUser = asyncHandler(async(req:Request,res:Response) =>{
     let filter:any = {}
 
     if(title){
-        filter.title = {$regex:title,$options:'i'}
-        filter.description = {$regex:title,$options:'i'}
+        // filter.title = {$regex:title,$options:'i'}
+        // filter.description = {regex:title,$options:'i'}
+        filter.$or = [
+           { title:new RegExp(title as string, 'i')},
+            {description:new RegExp(title as string, 'i')}
+        ]
+    }
+
+    if(max_amount && min_amount){
+        filter.amount= { 
+            $lte:Number(max_amount),
+            $gte:Number(min_amount)
+        }
     }
    const expenses =  await Expense.find({user:userId,...filter}).limit(limit).skip(skip).sort({createdAt:-1})
-   const total = await Expense.countDocuments({user:userId})
+   const total = await Expense.countDocuments({user:userId,...filter})
    const pagination = getPagination(total,limit,current_page)
 
     res.status(201).json({
@@ -184,7 +195,7 @@ export const getAllUserExpByCategory = asyncHandler(async(req:Request,res:Respon
 
     if(title){
         filter.title = {$regex:title,$options:'i'}
-        filter.description = {$regex:title,$options:'i'}
+        // filter.description = {$regex:title,$options:'i'}
     }
  
 
@@ -196,7 +207,7 @@ export const getAllUserExpByCategory = asyncHandler(async(req:Request,res:Respon
 
    const expenses =  await Expense.find({user:userId,category:categoryId,...filter}).limit(limit).skip(skip).sort({createdAt:-1})
 
-   const total = await Expense.countDocuments({user:userId,category:categoryId})
+   const total = await Expense.countDocuments({user:userId,category:categoryId,...filter})
    const pagination = getPagination(total,limit,current_page)
 
 

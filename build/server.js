@@ -42,6 +42,7 @@ const express_1 = __importDefault(require("express"));
 const database_config_1 = require("./config/database.config");
 const error_handler_middleware_1 = __importStar(require("./middlewares/error-handler.middleware"));
 const helmet_1 = __importDefault(require("helmet"));
+const cors_1 = __importDefault(require("cors"));
 // importing routes
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const category_routes_1 = __importDefault(require("./routes/category.routes"));
@@ -53,6 +54,7 @@ const app = (0, express_1.default)();
 (0, database_config_1.connectDB)(DB_URI);
 // using middlewares
 app.use((0, helmet_1.default)());
+app.use((0, cors_1.default)());
 app.use(express_1.default.urlencoded());
 app.use(express_1.default.json());
 app.use('/api/uploads', express_1.default.static('uploads/'));

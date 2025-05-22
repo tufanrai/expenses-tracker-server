@@ -36,7 +36,6 @@ exports.create = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
     const _b = req.body, { categoryId } = _b, data = __rest(_b, ["categoryId"]);
     const userId = req.user._id;
     const files = req.files;
-    console.log("👊 ~ expense.controller.ts:44 ~ create ~ files:", files);
     if (!categoryId) {
         throw new error_handler_middleware_1.default('categoryId is required', 400);
     }
@@ -128,11 +127,32 @@ exports.update = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
 }));
 exports.getAllByUser = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.user._id;
-    const expenses = yield expense_model_1.default.find({ user: userId });
+    const { per_page = "10", page = "1", title, max_amount, min_amount } = req.query;
+    const limit = parseInt(per_page);
+    const current_page = parseInt(page);
+    const skip = (current_page - 1) * limit;
+    let filter = {};
+    if (title) {
+        // filter.title = {$regex:title,$options:'i'}
+        // filter.description = {regex:title,$options:'i'}
+        filter.$or = [
+            { title: new RegExp(title, 'i') },
+            { description: new RegExp(title, 'i') }
+        ];
+    }
+    if (max_amount && min_amount) {
+        filter.amount = {
+            $lte: Number(max_amount),
+            $gte: Number(min_amount)
+        };
+    }
+    const expenses = yield expense_model_1.default.find(Object.assign({ user: userId }, filter)).limit(limit).skip(skip).sort({ createdAt: -1 });
+    const total = yield expense_model_1.default.countDocuments(Object.assign({ user: userId }, filter));
+    const pagination = (0, pagination_util_1.getPagination)(total, limit, current_page);
     res.status(201).json({
         status: 'success',
         message: "Expense fetched",
-        data: expenses,
+        data: { data: expenses, pagination },
         success: true
     });
 }));
@@ -146,16 +166,13 @@ exports.getAllUserExpByCategory = (0, async_handler_1.asyncHandler)((req, res) =
     let filter = {};
     if (title) {
         filter.title = { $regex: title, $options: 'i' };
-        filter.description = { $regex: title, $options: 'i' };
+        // filter.description = {$regex:title,$options:'i'}
     }
-    // if(A){
-    //     filter.amount = 
-    // }
     if (!categoryId) {
         throw new error_handler_middleware_1.default('categoryId is required', 400);
     }
     const expenses = yield expense_model_1.default.find(Object.assign({ user: userId, category: categoryId }, filter)).limit(limit).skip(skip).sort({ createdAt: -1 });
-    const total = yield expense_model_1.default.countDocuments({ user: userId, category: categoryId });
+    const total = yield expense_model_1.default.countDocuments(Object.assign({ user: userId, category: categoryId }, filter));
     const pagination = (0, pagination_util_1.getPagination)(total, limit, current_page);
     res.status(201).json({
         status: 'success',

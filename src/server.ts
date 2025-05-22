@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { connectDB } from "./config/database.config";
 import CustomError, { errorHandler } from "./middlewares/error-handler.middleware";
 import helmet from "helmet";
+import cors from 'cors'
 
 // importing routes
 import authRoutes from './routes/auth.routes'
@@ -18,6 +19,7 @@ connectDB(DB_URI);
 
 // using middlewares
 app.use(helmet())
+app.use(cors())
 app.use(express.urlencoded())
 app.use(express.json())
 
