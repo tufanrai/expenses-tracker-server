@@ -21,7 +21,11 @@ connectDB(DB_URI);
 
 // using middlewares
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.urlencoded());
 app.use(express.json());
 
