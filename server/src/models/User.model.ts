@@ -1,39 +1,46 @@
-import {model, Schema} from 'mongoose'
+import {Schema,model} from 'mongoose'
 import { Role } from '../types/enum.types';
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ ;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const UserSchema = new Schema({
-    full_name: {
-        type: String,
-        required: [true, 'full name required']
+const userSchema = new Schema({
+    full_name:{
+        type:String,
+        required:[true,'Name is required']
     },
-    user_name: {
-        type: String,
-        required: true,
-        unique: [true, 'user with same username exists']
+    user_name:{
+        type:String,
+        required:[true,'User name is required']
     },
-    contact: {
-        type: String,
+    email:{
+        type:String,
+        required:[true,'Name is required'],
+        unique:[true,'Email address is already used'],
+        // match:[emailRegex,'Email is not valid'],
+        validate: {
+            validator: function(v:string) {
+              return emailRegex.test(v);
+            },
+            message: '{VALUE} is not a valid email address!'
+          },
     },
-    email: {
-        type: String,
-        required: true,
-        unique: [true, 'user already exist with this email'],
-        match: [emailRegex, 'please check the email format']
+    role:{
+        type:String,
+        enum:Object.values(Role),
+        default:Role.USER
     },
-    password: {
-        type: String,
-        required: true,
-        min: 6,
-        max: 15
+    password:{
+        type:String,
+        required:[true,'Password is required']
     },
-    role: {
-        type: String,
-        enum: Object.values(Role),
-        default: Role.USER
+    phone:{
+        type:String,
+        match: [/^(98|97)\d{8}$/, 'Please enter a valid Nepali phone number']
     }
 },{timestamps:true})
 
-const Client = model('User', UserSchema)
-export default Client
+
+
+const User = model('user', userSchema)
+
+export default User
