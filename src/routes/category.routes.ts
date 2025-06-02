@@ -14,9 +14,9 @@ const router = express.Router();
 
 router.post("/", Authenticate([Role.USER]), create);
 router.put("/:id", Authenticate([Role.USER]), update);
+router.get("/", Authenticate([Role.ADMIN]), getAll);
 router.get("/user", Authenticate([Role.USER]), getAllUserCategory);
 router.get("/:id", Authenticate([Role.USER, Role.ADMIN]), getById);
-router.get("/", Authenticate([Role.ADMIN]), getAll);
 
 router.delete("/:id", Authenticate([Role.USER]), remove);
 
