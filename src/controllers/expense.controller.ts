@@ -168,7 +168,7 @@ export const getAllByUser = asyncHandler(async(req:Request,res:Response) =>{
             $gte:Number(min_amount)
         }
     }
-   const expenses =  await Expense.find({user:userId,...filter}).limit(limit).skip(skip).sort({createdAt:-1})
+   const expenses =  await Expense.find({user:userId,...filter}).limit(limit).skip(skip).sort({createdAt:-1}).populate('category')
    const total = await Expense.countDocuments({user:userId,...filter})
    const pagination = getPagination(total,limit,current_page)
 
@@ -233,7 +233,7 @@ export const remove = asyncHandler(async(req:Request,res:Response)=>{
         throw new CustomError('Expense not found',404)
     }
 
-    if(expense.user !== userId){
+    if(expense.user.toString() !== userId.toString()){
         throw new CustomError('You can not perform this operation',400)
     }
 
@@ -254,3 +254,5 @@ export const remove = asyncHandler(async(req:Request,res:Response)=>{
     })
 
 })
+
+
