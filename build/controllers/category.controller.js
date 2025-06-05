@@ -20,20 +20,20 @@ const category_model_1 = __importDefault(require("../models/category.model"));
 exports.create = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
     const userId = req.user._id;
-    console.log('controller', req.user);
+    console.log("controller", req.user);
     const user = yield user_model_1.default.findById(userId);
     if (!user) {
-        throw new error_handler_middleware_1.default('user not found', 404);
+        throw new error_handler_middleware_1.default("user not found", 404);
     }
     const category = yield category_model_1.default.create({ name, user: user._id });
     if (!category) {
-        throw new error_handler_middleware_1.default('Could not create category', 500);
+        throw new error_handler_middleware_1.default("Could not create category", 500);
     }
     res.status(201).json({
-        message: 'Category created',
+        message: "Category created",
         data: category,
         success: true,
-        status: 'success'
+        status: "success",
     });
 }));
 exports.update = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,61 +41,64 @@ exports.update = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
     const { id } = req.params;
     const userId = req.user._id;
     if (!id) {
-        throw new error_handler_middleware_1.default('category id  is required', 400);
+        throw new error_handler_middleware_1.default("category id  is required", 400);
     }
     if (!userId) {
-        throw new error_handler_middleware_1.default('user is required', 400);
+        throw new error_handler_middleware_1.default("user is required", 400);
     }
     const user = yield user_model_1.default.findById(userId);
     if (!user) {
-        throw new error_handler_middleware_1.default('user not found', 404);
+        throw new error_handler_middleware_1.default("user not found", 404);
     }
     const category = yield category_model_1.default.findOneAndUpdate({ _id: id, user: userId }, { name }, { new: true });
     if (!category) {
-        throw new error_handler_middleware_1.default('category not found', 404);
+        throw new error_handler_middleware_1.default("category not found", 404);
     }
     res.status(201).json({
-        message: 'Category updated',
+        message: "Category updated",
         data: category,
         success: true,
-        status: 'success'
+        status: "success",
     });
 }));
 exports.getById = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    console.log('get one', req.user);
+    console.log("get one", req.user);
     if (!id) {
-        throw new error_handler_middleware_1.default('category id  is required', 400);
+        throw new error_handler_middleware_1.default("category id  is required", 400);
     }
     const category = yield category_model_1.default.findById(id);
     if (!category) {
-        throw new error_handler_middleware_1.default('category not found', 404);
+        throw new error_handler_middleware_1.default("category not found", 404);
     }
     res.status(201).json({
-        message: 'Category fetched',
+        message: "Category fetched",
         data: category,
         success: true,
-        status: 'success'
+        status: "success",
     });
 }));
 exports.getAll = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const category = yield category_model_1.default.find({});
     res.status(201).json({
-        message: 'Categories fetched',
+        message: "Categories fetched",
         data: category,
         success: true,
-        status: 'success'
+        status: "success",
     });
 }));
 exports.getAllUserCategory = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.user._id;
-    console.log('here');
-    const categories = yield category_model_1.default.find({ user: userId.toString() });
+    if (!userId) {
+        console.log("userId not found");
+    }
+    console.log("here");
+    const categories = yield category_model_1.default.find({ user: userId });
     res.status(201).json({
-        message: 'Category fetched',
+        message: "Category fetched",
         data: categories,
         success: true,
-        status: 'success'
+        status: "success",
     });
 }));
 exports.remove = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -103,9 +106,9 @@ exports.remove = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
     const { id } = req.params;
     yield category_model_1.default.deleteOne({ user: userId, _id: id });
     res.status(201).json({
-        message: 'Category deleted',
+        message: "Category deleted",
         data: null,
         success: true,
-        status: 'success'
+        status: "success",
     });
 }));

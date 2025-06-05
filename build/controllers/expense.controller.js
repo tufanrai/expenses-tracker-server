@@ -146,7 +146,7 @@ exports.getAllByUser = (0, async_handler_1.asyncHandler)((req, res) => __awaiter
             $gte: Number(min_amount)
         };
     }
-    const expenses = yield expense_model_1.default.find(Object.assign({ user: userId }, filter)).limit(limit).skip(skip).sort({ createdAt: -1 });
+    const expenses = yield expense_model_1.default.find(Object.assign({ user: userId }, filter)).limit(limit).skip(skip).sort({ createdAt: -1 }).populate('category');
     const total = yield expense_model_1.default.countDocuments(Object.assign({ user: userId }, filter));
     const pagination = (0, pagination_util_1.getPagination)(total, limit, current_page);
     res.status(201).json({
@@ -191,7 +191,7 @@ exports.remove = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
     if (!expense) {
         throw new error_handler_middleware_1.default('Expense not found', 404);
     }
-    if (expense.user !== userId) {
+    if (expense.user.toString() !== userId.toString()) {
         throw new error_handler_middleware_1.default('You can not perform this operation', 400);
     }
     yield expense.deleteOne();

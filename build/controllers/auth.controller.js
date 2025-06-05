@@ -32,45 +32,45 @@ const jwt_utils_1 = require("../utils/jwt.utils");
 exports.register = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _a = req.body, { password, role } = _a, data = __rest(_a, ["password", "role"]);
     if (!password) {
-        throw new error_handler_middleware_1.default("Password is required", 400);
+        throw new error_handler_middleware_1.default('Password is required', 400);
     }
     const hashedPassword = yield (0, bcrypt_util_1.hash)(password);
     const user = yield user_model_1.default.create(Object.assign(Object.assign({}, data), { password: hashedPassword }));
     res.status(201).json({
-        message: "User register success",
+        message: 'User register success',
         data: user,
         success: true,
-        status: "success",
+        status: "success"
     });
 }));
 exports.login = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { password, email } = req.body;
     if (!password) {
-        throw new error_handler_middleware_1.default("Password is required", 400);
+        throw new error_handler_middleware_1.default('Password is required', 400);
     }
     if (!email) {
-        throw new error_handler_middleware_1.default("Email is required", 400);
+        throw new error_handler_middleware_1.default('Email is required', 400);
     }
     const user = yield user_model_1.default.findOne({ email });
     if (!user) {
-        throw new error_handler_middleware_1.default("Invalid email or password", 400);
+        throw new error_handler_middleware_1.default('Invalid email or password', 400);
     }
     const isPasswordMatched = yield (0, bcrypt_util_1.compare)(password, user.password);
     if (!isPasswordMatched) {
-        throw new error_handler_middleware_1.default("Invalid email or password", 400);
+        throw new error_handler_middleware_1.default('Invalid email or password', 400);
     }
     const token = (0, jwt_utils_1.generateJwTToken)({
         _id: user._id,
         email: user.email,
         user_name: user.user_name,
         full_name: user.full_name,
-        role: user.role,
+        role: user.role
     });
     res.status(201).json({
-        message: "User login success",
+        message: 'User login success',
         data: user,
         success: true,
         access_token: token,
-        status: "success",
+        status: "success"
     });
 }));

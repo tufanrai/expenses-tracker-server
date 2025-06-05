@@ -48,26 +48,28 @@ const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const category_routes_1 = __importDefault(require("./routes/category.routes"));
 const expense_routes_1 = __importDefault(require("./routes/expense.routes"));
 const PORT = process.env.PORT;
-const DB_URI = (_a = process.env.DB_URL) !== null && _a !== void 0 ? _a : "";
+const DB_URI = (_a = process.env.DB_URI) !== null && _a !== void 0 ? _a : "";
 const app = (0, express_1.default)();
 // database connection
 (0, database_config_1.connectDB)(DB_URI);
 // using middlewares
 app.use((0, helmet_1.default)());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: '*'
+}));
 app.use(express_1.default.urlencoded());
 app.use(express_1.default.json());
-app.use("/api/uploads", express_1.default.static("uploads/"));
-app.get("/", (req, res) => {
+app.use('/api/uploads', express_1.default.static('uploads/'));
+app.get('/', (req, res) => {
     res.status(200).json({
-        message: "Server is up & running",
+        message: 'Server is up & running'
     });
 });
 // using routes
-app.use("/api/auth", auth_routes_1.default);
-app.use("/api/category", category_routes_1.default);
-app.use("/api/expense", expense_routes_1.default);
-app.all("/*spalt", (req, res, next) => {
+app.use('/api/auth', auth_routes_1.default);
+app.use('/api/category', category_routes_1.default);
+app.use('/api/expense', expense_routes_1.default);
+app.all('/*spalt', (req, res, next) => {
     const message = `Can not ${req.method} on ${req.url}`;
     const error = new error_handler_middleware_1.default(message, 404);
     next(error);

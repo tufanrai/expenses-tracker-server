@@ -14,4 +14,5 @@ router.post('/', (0, authentication_middleware_1.Authenticate)([enum_types_1.Rol
 router.put('/:id', (0, authentication_middleware_1.Authenticate)([enum_types_1.Role.USER]), upload.array('receipts', 3), expense_controller_1.update);
 router.get('/', (0, authentication_middleware_1.Authenticate)([enum_types_1.Role.USER]), expense_controller_1.getAllByUser);
 router.get('/:categoryId', expense_controller_1.getAllUserExpByCategory);
+router.delete('/:id', (0, authentication_middleware_1.Authenticate)([enum_types_1.Role.USER]), expense_controller_1.remove);
 exports.default = router;

@@ -19,27 +19,28 @@ const user_model_1 = __importDefault(require("../models/user.model"));
 const Authenticate = (roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const auth_header = req.headers['authorization'];
+            const auth_header = req.headers["authorization"];
             if (!auth_header) {
-                throw new error_handler_middleware_1.default('Unauthorized, access denied', 401);
+                throw new error_handler_middleware_1.default("Unauthorized, access denied", 401);
             }
-            if (auth_header.split(' ').length !== 2 && !auth_header.startsWith('BEARER')) {
-                throw new error_handler_middleware_1.default('Unauthorized, access denied', 401);
+            if (auth_header.split(" ").length !== 2 &&
+                !auth_header.startsWith("BEARER")) {
+                throw new error_handler_middleware_1.default("Unauthorized, access denied", 401);
             }
-            const token = auth_header.split(' ')[1];
+            const token = auth_header.split(" ")[1];
             if (!token) {
-                throw new error_handler_middleware_1.default('Unauthorized, access denied', 401);
+                throw new error_handler_middleware_1.default("Unauthorized, access denied", 401);
             }
             const decoded = (0, jwt_utils_1.verifyJWT)(token);
             if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-                throw new error_handler_middleware_1.default('Unauthorized, token expired', 401);
+                throw new error_handler_middleware_1.default("Unauthorized, token expired", 401);
             }
             const user = yield user_model_1.default.findById(decoded._id);
             if (!user) {
-                throw new error_handler_middleware_1.default('Unauthorized, access denied', 401);
+                throw new error_handler_middleware_1.default("User not found ", 401);
             }
             if (roles && !roles.includes(user.role)) {
-                throw new error_handler_middleware_1.default('Forbidden, access denied', 403);
+                throw new error_handler_middleware_1.default("Users role did not matched", 403);
             }
             req.user = {
                 _id: decoded._id,
