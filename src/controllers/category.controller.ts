@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../utils/async-handler";
-import CustomError from "../middlewares/error-handler.middleware";
+import CustomError, {
+  errorHandler,
+} from "../middlewares/error-handler.middleware";
 import User from "../models/user.model";
 import Category from "../models/category.model";
+import { errorMonitor } from "nodemailer/lib/xoauth2";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const { name } = req.body;
@@ -103,7 +106,9 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
 export const getAllUserCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user._id;
-
+    if (!userId) {
+      console.log("userId not found");
+    }
     console.log("here");
 
     const categories = await Category.find({ user: userId });
