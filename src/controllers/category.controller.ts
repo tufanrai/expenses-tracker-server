@@ -7,6 +7,7 @@ import User from "../models/user.model";
 import Category from "../models/category.model";
 import { errorMonitor } from "nodemailer/lib/xoauth2";
 
+// Create category
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const { name } = req.body;
   const userId = req.user._id;
@@ -32,6 +33,7 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// Update cateogry
 export const update = asyncHandler(async (req: Request, res: Response) => {
   const { name } = req.body;
   const { id } = req.params;
@@ -69,6 +71,7 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// get category by id
 export const getById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -92,6 +95,7 @@ export const getById = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// get all category
 export const getAll = asyncHandler(async (req: Request, res: Response) => {
   const category = await Category.find({});
 
@@ -103,6 +107,7 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// get all category of user
 export const getAllUserCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user._id;
@@ -122,6 +127,7 @@ export const getAllUserCategory = asyncHandler(
   }
 );
 
+// remove perticular category
 export const remove = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user._id;
   const { id } = req.params;
