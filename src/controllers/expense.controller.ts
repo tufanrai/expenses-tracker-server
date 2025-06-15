@@ -185,8 +185,8 @@ export const getAllByUser = asyncHandler(
 );
 
 export const getById = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-
+  const id = req.params;
+  console.log(id);
   const expense = await Expense.findById(id);
   if (!expense) {
     throw new CustomError("Expense not found", 404);
