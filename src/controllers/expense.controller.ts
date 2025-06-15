@@ -1,7 +1,9 @@
 import { Response, Request } from "express";
 import Expense from "../models/expense.model";
 import { asyncHandler } from "../utils/async-handler";
-import CustomError from "../middlewares/error-handler.middleware";
+import CustomError, {
+  errorHandler,
+} from "../middlewares/error-handler.middleware";
 import Category from "../models/category.model";
 import { deleteImages } from "../config/cloudinary.config";
 import { sendMail } from "../utils/send-mail.util";
@@ -182,50 +184,67 @@ export const getAllByUser = asyncHandler(
   }
 );
 
+// export const getById = asyncHandler(async (req: Request, res: Response) => {
+//   const userId = req.user._id;
+//   const id = req.params;
+//   const {
+//     per_page = "10",
+//     page = "1",
+//     title,
+//     max_amount,
+//     min_amount,
+//   } = req.query;
+
+//   const limit = parseInt(per_page as string);
+//   const current_page = parseInt(page as string);
+//   const skip = (current_page - 1) * limit;
+
+//   let filter: any = {};
+
+//   if (title) {
+//     // filter.title = {$regex:title,$options:'i'}
+//     // filter.description = {regex:title,$options:'i'}
+//     filter.$or = [
+//       { title: new RegExp(title as string, "i") },
+//       { description: new RegExp(title as string, "i") },
+//     ];
+//   }
+
+//   if (max_amount && min_amount) {
+//     filter.amount = {
+//       $lte: Number(max_amount),
+//       $gte: Number(min_amount),
+//     };
+//   }
+//   const expenses = await Expense.find({ _id: id, user: userId, ...filter })
+//     .limit(limit)
+//     .skip(skip)
+//     .sort({ createdAt: -1 })
+//     .populate("category");
+//   const total = await Expense.countDocuments({ user: userId, ...filter });
+//   const pagination = getPagination(total, limit, current_page);
+
+//   res.status(201).json({
+//     status: "success",
+//     message: "Expense fetched",
+//     data: { data: expenses, pagination },
+//     success: true,
+//   });
+// });
+
 export const getById = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user._id;
   const id = req.params;
-  const {
-    per_page = "10",
-    page = "1",
-    title,
-    max_amount,
-    min_amount,
-  } = req.query;
 
-  const limit = parseInt(per_page as string);
-  const current_page = parseInt(page as string);
-  const skip = (current_page - 1) * limit;
+  const expenses = await Expense.findOne({ _id: id, user: userId });
 
-  let filter: any = {};
-
-  if (title) {
-    // filter.title = {$regex:title,$options:'i'}
-    // filter.description = {regex:title,$options:'i'}
-    filter.$or = [
-      { title: new RegExp(title as string, "i") },
-      { description: new RegExp(title as string, "i") },
-    ];
+  if (!expenses) {
+    throw new CustomError("expenses does not exist", 404);
   }
 
-  if (max_amount && min_amount) {
-    filter.amount = {
-      $lte: Number(max_amount),
-      $gte: Number(min_amount),
-    };
-  }
-  const expenses = await Expense.find({ _id: id, user: userId, ...filter })
-    .limit(limit)
-    .skip(skip)
-    .sort({ createdAt: -1 })
-    .populate("category");
-  const total = await Expense.countDocuments({ user: userId, ...filter });
-  const pagination = getPagination(total, limit, current_page);
-
-  res.status(201).json({
-    status: "success",
-    message: "Expense fetched",
-    data: { data: expenses, pagination },
+  res.status(200).json({
+    message: "data fetched successfully",
+    data: expenses,
     success: true,
   });
 });

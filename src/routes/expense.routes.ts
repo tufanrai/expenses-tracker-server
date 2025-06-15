@@ -28,7 +28,7 @@ router.put(
 );
 router.get("/", Authenticate([Role.USER]), getAllByUser);
 router.get("/:id", Authenticate([Role.USER]), getById);
-router.get("/:categoryId", getAllUserExpByCategory);
+router.get("/category/:categoryId", getAllUserExpByCategory);
 router.delete("/:id", Authenticate([Role.USER]), remove);
 
 export default router;
