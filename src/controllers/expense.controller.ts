@@ -192,7 +192,7 @@ export const getExpenseById = asyncHandler(
   async (req: Request, res: Response) => {
     const id = req.params;
     console.log(id);
-    const expense = await Expense.findById(id);
+    const expense = await Expense.findOne({ _id: id });
     if (!expense) {
       throw new CustomError("Expense not found", 404);
     }

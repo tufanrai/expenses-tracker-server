@@ -32,7 +32,7 @@ export const Authenticate = (roles?: Role[]) => {
         throw new CustomError("Unauthorized, token expired", 401);
       }
 
-      const user = await User.findById(decoded._id);
+      const user = await User.findOne({ _id: decoded._id });
 
       if (!user) {
         throw new CustomError("User not found ", 401);
