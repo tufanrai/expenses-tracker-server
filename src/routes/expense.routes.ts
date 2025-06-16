@@ -5,11 +5,11 @@ import {
   getAllByUser,
   getAllUserExpByCategory,
   remove,
+  getExpenseById,
 } from "../controllers/expense.controller";
 import { Authenticate } from "../middlewares/authentication.middleware";
 import { Role } from "../types/enum.types";
 import { uploader } from "../middlewares/upload.middleware";
-import { getById } from "../controllers/category.controller";
 
 const upload = uploader("receipts");
 const router = express.Router();
@@ -27,7 +27,7 @@ router.put(
   update
 );
 router.get("/", Authenticate([Role.USER]), getAllByUser);
-router.get("/:id", Authenticate([Role.USER]), getById);
+router.get("/:id", Authenticate([Role.USER]), getExpenseById);
 router.get("/category/:categoryId", getAllUserExpByCategory);
 router.delete("/:id", Authenticate([Role.USER]), remove);
 

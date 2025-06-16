@@ -9,6 +9,7 @@ import { deleteImages } from "../config/cloudinary.config";
 import { sendMail } from "../utils/send-mail.util";
 import { getPagination } from "../utils/pagination.util";
 
+// create new expense
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const { categoryId, ...data } = req.body;
   const userId = req.user._id;
@@ -78,6 +79,7 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// update expense
 export const update = asyncHandler(async (req: Request, res: Response) => {
   const { categoryId, title, date, amount, description, removedImages } =
     req.body;
@@ -135,6 +137,7 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// get all expense
 export const getAllByUser = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user._id;
@@ -184,22 +187,26 @@ export const getAllByUser = asyncHandler(
   }
 );
 
-export const getById = asyncHandler(async (req: Request, res: Response) => {
-  const id = req.params;
-  console.log(id);
-  const expense = await Expense.findById(id);
-  if (!expense) {
-    throw new CustomError("Expense not found", 404);
+// get expense by id
+export const getExpenseById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const id = req.params;
+    console.log(id);
+    const expense = await Expense.findById(id);
+    if (!expense) {
+      throw new CustomError("Expense not found", 404);
+    }
+
+    res.status(200).json({
+      status: "success",
+      success: true,
+      message: "Expense by ID.",
+      data: expense,
+    });
   }
+);
 
-  res.status(200).json({
-    status: "success",
-    success: true,
-    message: "Expense by ID.",
-    data: expense,
-  });
-});
-
+// get all expense by category
 export const getAllUserExpByCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user._id;
@@ -249,6 +256,7 @@ export const getAllUserExpByCategory = asyncHandler(
   }
 );
 
+// remove expense
 export const remove = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const userId = req.user._id;
