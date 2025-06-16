@@ -1,50 +1,52 @@
+import { model, Schema } from "mongoose";
 
-import {model,Schema} from 'mongoose'
-
-const expenseSchema = new Schema({
-    title:{
-        type:String,
-        required:[true,'Expense title is required'],
-        trim:true
+const expenseSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: [true, "Expense title is required"],
+      trim: true,
     },
-    date:{
-        type:Date,
-        default:() => Date.now()
+    date: {
+      type: Date,
+      default: () => Date.now(),
     },
-    amount:{
-        type:Number,
-        required:[true,'Expense amount is required']
+    amount: {
+      type: Number,
+      required: [true, "Expense amount is required"],
     },
-    description:{
-        type:String,
-        trim:true,
-        min:10,
-        max:500
+    description: {
+      type: String,
+      trim: true,
+      min: 10,
+      max: 500,
     },
-    receipts:[{
-        path:{
-            type:String,
-            required:true
+    receipts: [
+      {
+        path: {
+          type: String,
+          required: true,
         },
-        public_id:{
-            type:String,
-            required:true
-
-        }
-    }],
-    category:{
-        type:Schema.Types.ObjectId,
-        required:[true,'Expense category is required'],
-        ref:'category'
+        public_id: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    category: {
+      type: Schema.Types.ObjectId,
+      required: [true, "Expense category is required"],
+      ref: "category",
     },
-    user:{
-        type:Schema.Types.ObjectId,
-        required:[true,'Expense user is required'],
-        ref:'user'
-    }
-},{timestamps:true})
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, "Expense user is required"],
+      ref: "user",
+    },
+  },
+  { timestamps: true }
+);
 
+const Expense = model("expense", expenseSchema);
 
-const Expense = model('expense',expenseSchema)
-
-export default Expense
+export default Expense;
