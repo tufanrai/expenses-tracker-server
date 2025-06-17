@@ -35,7 +35,7 @@ const Authenticate = (roles) => {
             if (decoded.exp && decoded.exp * 1000 < Date.now()) {
                 throw new error_handler_middleware_1.default("Unauthorized, token expired", 401);
             }
-            const user = yield user_model_1.default.findById(decoded._id);
+            const user = yield user_model_1.default.findOne({ _id: decoded._id });
             if (!user) {
                 throw new error_handler_middleware_1.default("User not found ", 401);
             }

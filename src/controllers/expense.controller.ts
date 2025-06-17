@@ -190,7 +190,7 @@ export const getAllByUser = asyncHandler(
 // get expense by id
 export const getExpenseById = asyncHandler(
   async (req: Request, res: Response) => {
-    const id = req.params;
+    const id = req.params.id;
     console.log(id);
     const expense = await Expense.findOne({ _id: id });
     if (!expense) {

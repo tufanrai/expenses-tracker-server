@@ -4,43 +4,45 @@ const mongoose_1 = require("mongoose");
 const expenseSchema = new mongoose_1.Schema({
     title: {
         type: String,
-        required: [true, 'Expense title is required'],
-        trim: true
+        required: [true, "Expense title is required"],
+        trim: true,
     },
     date: {
         type: Date,
-        default: () => Date.now()
+        default: () => Date.now(),
     },
     amount: {
         type: Number,
-        required: [true, 'Expense amount is required']
+        required: [true, "Expense amount is required"],
     },
     description: {
         type: String,
         trim: true,
         min: 10,
-        max: 500
+        max: 500,
     },
-    receipts: [{
+    receipts: [
+        {
             path: {
                 type: String,
-                required: true
+                required: true,
             },
             public_id: {
                 type: String,
-                required: true
-            }
-        }],
+                required: true,
+            },
+        },
+    ],
     category: {
         type: mongoose_1.Schema.Types.ObjectId,
-        required: [true, 'Expense category is required'],
-        ref: 'category'
+        required: [true, "Expense category is required"],
+        ref: "category",
     },
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
-        required: [true, 'Expense user is required'],
-        ref: 'user'
-    }
+        required: [true, "Expense user is required"],
+        ref: "user",
+    },
 }, { timestamps: true });
-const Expense = (0, mongoose_1.model)('expense', expenseSchema);
+const Expense = (0, mongoose_1.model)("expense", expenseSchema);
 exports.default = Expense;

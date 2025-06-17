@@ -17,6 +17,7 @@ const async_handler_1 = require("../utils/async-handler");
 const error_handler_middleware_1 = __importDefault(require("../middlewares/error-handler.middleware"));
 const user_model_1 = __importDefault(require("../models/user.model"));
 const category_model_1 = __importDefault(require("../models/category.model"));
+// Create category
 exports.create = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
     const userId = req.user._id;
@@ -36,6 +37,7 @@ exports.create = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
         status: "success",
     });
 }));
+// Update cateogry
 exports.update = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
     const { id } = req.params;
@@ -61,6 +63,7 @@ exports.update = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
         status: "success",
     });
 }));
+// get category by id
 exports.getById = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     console.log("get one", req.user);
@@ -78,6 +81,7 @@ exports.getById = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void
         status: "success",
     });
 }));
+// get all category
 exports.getAll = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const category = yield category_model_1.default.find({});
     res.status(201).json({
@@ -87,6 +91,7 @@ exports.getAll = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 
         status: "success",
     });
 }));
+// get all category of user
 exports.getAllUserCategory = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.user._id;
     if (!userId) {
@@ -101,6 +106,7 @@ exports.getAllUserCategory = (0, async_handler_1.asyncHandler)((req, res) => __a
         status: "success",
     });
 }));
+// remove perticular category
 exports.remove = (0, async_handler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.user._id;
     const { id } = req.params;
